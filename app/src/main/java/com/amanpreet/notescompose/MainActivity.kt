@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -83,9 +87,24 @@ fun ScaffoldExample() {
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            for(items in list){
-                Text(  modifier = Modifier.padding(8.dp),
-                   text =  "$items")
+            for(items in 0..list.size-1){
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        text = "${list[items]}"
+                    )
+                    Icon(Icons.Filled.Clear , contentDescription = "Check mark", modifier = Modifier.clickable {
+                        list.removeAt(items)
+                    })
+
+//                    Icon(
+//                        asset = Icons.Filled.Search,
+//                        modifier = Modifier.clickable { // Todo -> handle click },
+//                            )
+                }
+
 
             }
         }
