@@ -59,20 +59,22 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldExample() {
-    val presses: MutableState<Int> = remember { mutableStateOf(1) }
     var text: MutableState<String> = remember { mutableStateOf("") }
-
-    val list = remember {
-        mutableStateListOf<String>("item1", "item2", "item3")
-    }
-
+    val list = remember { mutableStateListOf<String>("Value 1", "item2", "item3") }
     val showDialog = remember { mutableStateOf(false) }
+    val position = remember { mutableStateOf(-1) }
 
     if (showDialog.value) {
-        CustomDialog(value = text.value, setShowDialog = {
+        CustomDialog(value = text.value, position = position.value, setShowDialog = {
             showDialog.value = it
-        }, returnValue = {
-            list.add(it)
+        }, returnValue = { returnText, index ->
+            if (index > -1) {
+                list[index] = returnText
+            } else {
+                list.add(returnText)
+            }
+            position.value = -1
+            text.value = ""
         })
     }
     Scaffold(
@@ -85,9 +87,7 @@ fun ScaffoldExample() {
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                presses.value += 1
-                // list.add("Testing ${presses.value}")
-                println("Clicked ${list.size}")
+                position.value = -1
                 showDialog.value = true
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
@@ -98,24 +98,27 @@ fun ScaffoldExample() {
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            for (items in 0..list.size - 1) {
+            for (index in 0..list.size - 1) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier
                             .padding(8.dp)
-                            .weight(1f),
-                        text = "${list[items]}"
+                            .weight(1f)
+                            .clickable {
+                                text.value = list[index]
+                                position.value = index
+                                showDialog.value = true
+                            },
+                        text = "${list[index]}"
                     )
                     Icon(
                         Icons.Filled.Clear,
                         contentDescription = "Check mark",
                         modifier = Modifier.clickable {
-                            list.removeAt(items)
+                            list.removeAt(index)
                         })
 
                 }
-
-
             }
         }
     }
