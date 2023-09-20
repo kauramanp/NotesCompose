@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.amanpreet.notescompose.ui.theme.NotesComposeTheme
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 
 class MainActivity : ComponentActivity() {
     var list = arrayListOf<String>()
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                 //   Greeting("Android")
+                    //   Greeting("Android")
                     ScaffoldExample()
                 }
             }
@@ -48,21 +50,31 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-   /* Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )*/
+    /* Text(
+         text = "Hello $name!",
+         modifier = modifier
+     )*/
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldExample() {
     val presses: MutableState<Int> = remember { mutableStateOf(1) }
+    var text: MutableState<String> = remember { mutableStateOf("") }
 
     val list = remember {
         mutableStateListOf<String>("item1", "item2", "item3")
-
     }
 
+    val showDialog = remember { mutableStateOf(false) }
+
+    if (showDialog.value) {
+        CustomDialog(value = text.value, setShowDialog = {
+            showDialog.value = it
+        }, returnValue = {
+            list.add(it)
+        })
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -71,13 +83,12 @@ fun ScaffoldExample() {
                 }
             )
         },
-
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                presses.value +=1
-                list.add("Testing ${presses.value}")
+                presses.value += 1
+                // list.add("Testing ${presses.value}")
                 println("Clicked ${list.size}")
-
+                showDialog.value = true
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
@@ -87,7 +98,7 @@ fun ScaffoldExample() {
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            for(items in 0..list.size-1){
+            for (items in 0..list.size - 1) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier
@@ -95,20 +106,21 @@ fun ScaffoldExample() {
                             .weight(1f),
                         text = "${list[items]}"
                     )
-                    Icon(Icons.Filled.Clear , contentDescription = "Check mark", modifier = Modifier.clickable {
-                        list.removeAt(items)
-                    })
+                    Icon(
+                        Icons.Filled.Clear,
+                        contentDescription = "Check mark",
+                        modifier = Modifier.clickable {
+                            list.removeAt(items)
+                        })
 
-//                    Icon(
-//                        asset = Icons.Filled.Search,
-//                        modifier = Modifier.clickable { // Todo -> handle click },
-//                            )
                 }
 
 
             }
         }
     }
+
+
 }
 
 @Preview(showBackground = true)
