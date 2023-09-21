@@ -10,18 +10,22 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.amanpreet.notescompose.ui.theme.NotesComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomDialog(position: Int, value: String, setShowDialog: (Boolean) -> Unit, returnValue: (String, Int) -> Unit) {
+fun CustomDialog(value: String,
+    position: Int, setShowDialog: (Boolean) -> Unit,
+    returnValue: (String, Int) -> Unit
+) {
     var textFieldError = remember { mutableStateOf("") }
     var textValue = remember { mutableStateOf(value) }
     var showError = remember { mutableStateOf(false) }
@@ -41,14 +45,17 @@ fun CustomDialog(position: Int, value: String, setShowDialog: (Boolean) -> Unit,
                 ) {
 
                     Text( modifier = Modifier
-                        .padding(8.dp), text = titleText,)
+                        .padding(4.dp), text = titleText,)
                     OutlinedTextField(
                         value = textValue.value,
                         onValueChange = { textValue.value = it },
                         label = { Text(text = titleText) },
                         isError = false
                     )
-                    Button(onClick = {
+                    Button(
+                        modifier = Modifier
+                        .padding(8.dp),
+                        onClick = {
                         if (textValue.value.isEmpty()) {
                             showError.value = true
                         } else {
@@ -64,5 +71,13 @@ fun CustomDialog(position: Int, value: String, setShowDialog: (Boolean) -> Unit,
 
         }
 
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DialogPreview() {
+    NotesComposeTheme {
+        CustomDialog(position = -1, value = "", setShowDialog = {}) { _, _-> }
     }
 }
