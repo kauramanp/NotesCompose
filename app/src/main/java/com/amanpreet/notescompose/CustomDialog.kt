@@ -40,7 +40,8 @@ fun CustomDialog(position: Int, value: String, setShowDialog: (Boolean) -> Unit,
                     modifier = Modifier.padding(24.dp)
                 ) {
 
-                    Text(text = titleText)
+                    Text( modifier = Modifier
+                        .padding(8.dp), text = titleText,)
                     OutlinedTextField(
                         value = textValue.value,
                         onValueChange = { textValue.value = it },
