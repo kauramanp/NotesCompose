@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -36,7 +37,6 @@ fun CustomDialog(
 ) {
     var isError = rememberSaveable { mutableStateOf(false) }
     var textValue = remember { mutableStateOf(value) }
-    var showError = remember { mutableStateOf(false) }
     var titleText = "Add Value"
     if (position > -1) {
         titleText = "Update Value"
