@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -27,7 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.amanpreet.notescompose.ui.theme.NotesComposeTheme
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     var list = arrayListOf<String>()
@@ -60,7 +64,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun ScaffoldExample() {
     var text: MutableState<String> = remember { mutableStateOf("") }
-    val list = remember { mutableStateListOf<String>("Value 1", "item2", "item3") }
+    val list = remember { mutableStateListOf<String>("Row 1", "Row 2", "Row 3") }
     val showDialog = remember { mutableStateOf(false) }
     val position = remember { mutableStateOf(-1) }
 
@@ -81,9 +85,12 @@ fun ScaffoldExample() {
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Array List CRUD")
-                }
+                    Text(color = Color.White ,text = "App Bar")
+                },
+                        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+
             )
+
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -98,7 +105,7 @@ fun ScaffoldExample() {
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            for (index in 0..list.size - 1) {
+            for (index in 0 until list.size) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier
@@ -109,12 +116,15 @@ fun ScaffoldExample() {
                                 position.value = index
                                 showDialog.value = true
                             },
-                        text = "${list[index]}"
+                        text = "${list[index]}",
+                        style = TextStyle(fontSize = 30.sp)
                     )
                     Icon(
-                        Icons.Filled.Clear,
+                        Icons.Filled.Delete,
                         contentDescription = "Check mark",
-                        modifier = Modifier.clickable {
+                        modifier = Modifier
+                            .padding(horizontal = 5.dp, vertical = 8.dp)
+                            .clickable {
                             list.removeAt(index)
                         })
 
