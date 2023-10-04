@@ -1,5 +1,7 @@
 package com.amanpreet.notescompose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,12 +53,18 @@ fun CustomDialog(
             shape = RoundedCornerShape(10.dp),
             color = Color.White
         ) {
-            Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .background(Color.Black)
+                    .border(
+                        width = 2.dp,
+                        color = Color.Red,
+                        shape = RoundedCornerShape(5.dp))
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(24.dp)
                 ) {
-
                     Text(
                         modifier = Modifier
                             .padding(4.dp),
