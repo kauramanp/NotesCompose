@@ -55,7 +55,7 @@ fun CustomDialog(
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.Black)
+                    .background(Color.White)
                     .border(
                         width = 2.dp,
                         color = Color.Red,
